@@ -56,7 +56,7 @@ public class WordCount {
 				throws IOException, InterruptedException {
 			log.info("--------> run() called");
 		}
-		*/		
+		*/
 	}	
 	
 	public static class MyReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
