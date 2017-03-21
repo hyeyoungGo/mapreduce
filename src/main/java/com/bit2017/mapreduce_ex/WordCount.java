@@ -16,25 +16,26 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import com.bit2017.mapreduce.io.NumberWritable;
+import com.bit2017.mapreduce.io.StringWritable;
 import com.sun.org.apache.commons.logging.Log;
 import com.sun.org.apache.commons.logging.LogFactory;
 
 public class WordCount {
 	private static Log log = LogFactory.getLog(WordCount.class);
 	
-	public static class MyMapper extends Mapper<NumberWritable, Text, Text, NumberWritable> {
-		private Text word = new Text();
+	public static class MyMapper extends Mapper<NumberWritable, Text, StringWritable, NumberWritable> {
+		private StringWritable word = new StringWritable();
 		private static NumberWritable one = new NumberWritable(1L);
 		
 		
 		@Override
-		protected void setup(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
+		protected void setup(Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> setup() called");
 		}
 
 		@Override
-		protected void map(NumberWritable key, Text value, Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
+		protected void map(NumberWritable key, Text value, Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> MyMapper.map() called");
 			String line = value.toString();
@@ -47,7 +48,7 @@ public class WordCount {
 		
 		
 		@Override
-		protected void cleanup(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
+		protected void cleanup(Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> cleanup() called");
 		}
@@ -93,7 +94,7 @@ public class WordCount {
 		job.setReducerClass( MyReducer.class );
 		
 		//4. 출력
-		job.setOutputKeyClass( Text.class );
+		job.setOutputKeyClass( StringWritable.class );
 		
 		//5. 출력 value 타입
 		job.setMapOutputValueClass( LongWritable.class );
