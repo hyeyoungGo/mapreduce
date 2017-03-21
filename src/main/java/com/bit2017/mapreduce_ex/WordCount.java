@@ -23,19 +23,19 @@ import com.sun.org.apache.commons.logging.LogFactory;
 public class WordCount {
 	private static Log log = LogFactory.getLog(WordCount.class);
 	
-	public static class MyMapper extends Mapper<NumberWritable, Text, StringWritable, NumberWritable> {
+	public static class MyMapper extends Mapper<LongWritable, Text, StringWritable, NumberWritable> {
 		private StringWritable word = new StringWritable();
 		private static NumberWritable one = new NumberWritable(1L);
 		
 		
 		@Override
-		protected void setup(Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
+		protected void setup(Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> setup() called");
 		}
 
 		@Override
-		protected void map(NumberWritable key, Text value, Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
+		protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> MyMapper.map() called");
 			String line = value.toString();
@@ -48,7 +48,7 @@ public class WordCount {
 		
 		
 		@Override
-		protected void cleanup(Mapper<NumberWritable, Text, StringWritable, NumberWritable>.Context context)
+		protected void cleanup(Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> cleanup() called");
 		}
