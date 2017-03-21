@@ -94,10 +94,10 @@ public class WordCount {
 		job.setReducerClass( MyReducer.class );
 		
 		//4. 출력
-		job.setOutputKeyClass( StringWritable.class );
+		job.setMapOutputKeyClass( StringWritable.class );
 		
 		//5. 출력 value 타입
-		job.setMapOutputValueClass( LongWritable.class );
+		job.setMapOutputValueClass( NumberWritable.class );
 		
 		//6. 입력 파일 포멧 지정(생략 가능)
 		job.setInputFormatClass( TextInputFormat.class );
