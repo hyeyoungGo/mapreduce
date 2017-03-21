@@ -88,15 +88,15 @@ private static Log log = LogFactory.getLog(WordCount.class);
 		//7. 출력 파일 포멧 지정(생략 가능)
 		job.setOutputFormatClass(TextOutputFormat.class);
 		
+		// 리듀스 테스크 수 변경
+		job.setNumReduceTasks(2);
+		
 		//8. 입력파일 이름 지정
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		
 		//9. 출력 디렉토리 지정
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		
-		// 리듀스 테스크 수 변경
-		job.setNumReduceTasks(2);
-				
+						
 		// 실행
 		job.waitForCompletion( true );
 	}
