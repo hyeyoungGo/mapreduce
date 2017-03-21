@@ -15,59 +15,61 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+import com.bit2017.mapreduce.io.NumberWritable;
 import com.sun.org.apache.commons.logging.Log;
 import com.sun.org.apache.commons.logging.LogFactory;
 
 public class WordCount {
 	private static Log log = LogFactory.getLog(WordCount.class);
 	
-	public static class MyMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+	public static class MyMapper extends Mapper<NumberWritable, Text, Text, NumberWritable> {
 		private Text word = new Text();
-		private static LongWritable one = new LongWritable(1);
+		private static NumberWritable one = new NumberWritable(1L);
 		
 		
 		@Override
-		protected void setup(Mapper<LongWritable, Text, Text, LongWritable>.Context context)
+		protected void setup(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> setup() called");
 		}
 
 		@Override
-		protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, LongWritable>.Context context)
+		protected void map(NumberWritable key, Text value, Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
+			log.info("--------> MyMapper.map() called");
 			String line = value.toString();
 			StringTokenizer tokenize = new StringTokenizer(line, "\r\n\t,|()<> ''");
-			while (tokenize.hasMoreElements()) {
-				word.set(tokenize.nextToken());
+			while (tokenize.hasMoreTokens()) {
+				word.set(tokenize.nextToken().toLowerCase());
 				context.write(word, one);
 			}
 		}
 		
 		
 		@Override
-		protected void cleanup(Mapper<LongWritable, Text, Text, LongWritable>.Context context)
+		protected void cleanup(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> cleanup() called");
 		}
 		
 		//run은 보통 Override하지 않는다.
 		/*@Override
-		public void run(Mapper<LongWritable, Text, Text, LongWritable>.Context context)
+		public void run(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
 			log.info("--------> run() called");
 		}
 		*/
 	}	
 	
-	public static class MyReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
+	public static class MyReducer extends Reducer<Text, NumberWritable, Text, NumberWritable> {
 		
-		private LongWritable sumWritable = new LongWritable();
+		private NumberWritable sumWritable = new NumberWritable();
 		
 		@Override
-		protected void reduce(Text key, Iterable<LongWritable> values,
-				Reducer<Text, LongWritable, Text, LongWritable>.Context context) throws IOException, InterruptedException {
+		protected void reduce(Text key, Iterable<NumberWritable> values,
+				Reducer<Text, NumberWritable, Text, NumberWritable>.Context context) throws IOException, InterruptedException {
 			long sum = 0;
-			for( LongWritable value : values ) {
+			for( NumberWritable value : values ) {
 				sum += value.get();
 			}
 			
