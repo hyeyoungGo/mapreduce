@@ -15,15 +15,14 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import com.bit2017.mapreduce.io.NumberWritable;
 public class WordCount3 {
 	
-	public static class MyMapper extends Mapper<LongWritable, Text, Text, NumberWritable> {
+	public static class MyMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 		private Text word = new Text();
-		private static NumberWritable one = new NumberWritable(1L);
+		private static LongWritable one = new LongWritable(1L);
 
 		@Override
-		protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, NumberWritable>.Context context)
+		protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, LongWritable>.Context context)
 				throws IOException, InterruptedException {
 			String line = value.toString();
 			StringTokenizer tokenize = new StringTokenizer(line, "\r\n\t,|()<> ''");
