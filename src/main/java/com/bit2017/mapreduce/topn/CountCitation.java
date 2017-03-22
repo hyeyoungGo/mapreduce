@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
@@ -21,7 +21,7 @@ public class CountCitation {
 		@Override
 		protected void map(Text key, Text value, Mapper<Text, Text, Text, LongWritable>.Context context)
 				throws IOException, InterruptedException {
-			context.write(value, one);
+			context.write( value, one );
 		}
 	}	
 	
@@ -59,7 +59,7 @@ public class CountCitation {
 		job.setMapOutputValueClass( LongWritable.class );
 		
 		//6. 입력 파일 포멧 지정(생략 가능)
-		job.setInputFormatClass( TextInputFormat.class );
+		job.setInputFormatClass( KeyValueTextInputFormat.class );
 		
 		//7. 출력 파일 포멧 지정(생략 가능)
 		job.setOutputFormatClass(TextOutputFormat.class);
