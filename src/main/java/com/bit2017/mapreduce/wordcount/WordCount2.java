@@ -1,4 +1,4 @@
-package com.bit2017.mapreduce_ex;
+package com.bit2017.mapreduce.wordcount;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -17,27 +17,16 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import com.bit2017.mapreduce.io.NumberWritable;
 import com.bit2017.mapreduce.io.StringWritable;
-import com.sun.org.apache.commons.logging.Log;
-import com.sun.org.apache.commons.logging.LogFactory;
 
-public class WordCount {
-	private static Log log = LogFactory.getLog(WordCount.class);
+public class WordCount2 {
 	
 	public static class MyMapper extends Mapper<LongWritable, Text, StringWritable, NumberWritable> {
 		private StringWritable word = new StringWritable();
 		private static NumberWritable one = new NumberWritable(1L);
-		
-		
-		@Override
-		protected void setup(Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
-				throws IOException, InterruptedException {
-			log.info("--------> setup() called");
-		}
 
 		@Override
 		protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
 				throws IOException, InterruptedException {
-			log.info("--------> MyMapper.map() called");
 			String line = value.toString();
 			StringTokenizer tokenize = new StringTokenizer(line, "\r\n\t,|()<> ''");
 			while (tokenize.hasMoreTokens()) {
@@ -45,21 +34,6 @@ public class WordCount {
 				context.write(word, one);
 			}
 		}
-		
-		
-		@Override
-		protected void cleanup(Mapper<LongWritable, Text, StringWritable, NumberWritable>.Context context)
-				throws IOException, InterruptedException {
-			log.info("--------> cleanup() called");
-		}
-		
-		//run은 보통 Override하지 않는다.
-		/*@Override
-		public void run(Mapper<NumberWritable, Text, Text, NumberWritable>.Context context)
-				throws IOException, InterruptedException {
-			log.info("--------> run() called");
-		}
-		*/
 	}	
 	
 	public static class MyReducer extends Reducer<StringWritable, NumberWritable, StringWritable, NumberWritable> {
@@ -85,10 +59,10 @@ public class WordCount {
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
-		Job job = new Job( conf, "WordCount" );
+		Job job = new Job( conf, "WordCount2" );
 		
 		//1. job instance 초기화 작업
-		job.setJarByClass( WordCount.class );
+		job.setJarByClass( WordCount2.class );
 		
 		//2. mapper 클래스 지정
 		job.setMapperClass( MyMapper.class );
@@ -117,5 +91,4 @@ public class WordCount {
 		// 실행
 		job.waitForCompletion( true );
 	}
-
 }

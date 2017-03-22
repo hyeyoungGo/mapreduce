@@ -1,4 +1,4 @@
-package com.bit2017.mapreduce_ex;
+package com.bit2017.mapreduce.wordcount;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -19,7 +19,7 @@ import com.bit2017.mapreduce.io.StringWritable;
 import com.sun.org.apache.commons.logging.Log;
 import com.sun.org.apache.commons.logging.LogFactory;
 
-public class WordCount2 {
+public class WordCount3 {
 private static Log log = LogFactory.getLog(WordCount.class);
 	
 	public static class MyMapper extends Mapper<Text, Text, StringWritable, NumberWritable> {
@@ -52,9 +52,6 @@ private static Log log = LogFactory.getLog(WordCount.class);
 			}
 			
 		sumWritable.set( sum );
-		
-		context.getCounter("Word Status", "Count Of All Words").increment(sum);
-		
 		context.write( key, sumWritable );
 		}
 		
@@ -62,7 +59,7 @@ private static Log log = LogFactory.getLog(WordCount.class);
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
-		Job job = new Job( conf, "WordCount" );
+		Job job = new Job( conf, "WordCount3" );
 		
 		//1. job instance 초기화 작업
 		job.setJarByClass( WordCount.class );
