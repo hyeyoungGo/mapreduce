@@ -70,6 +70,8 @@ public class WordCount3 {
 		
 		// 컴바이너 세팅
 		//job.setCombinerClass(MyReducer.class);
+		// tasks 개수 지정
+		job.setNumReduceTasks(2);
 		
 		//4. 출력
 		job.setMapOutputKeyClass( Text.class );
