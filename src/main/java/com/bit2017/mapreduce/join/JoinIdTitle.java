@@ -50,11 +50,7 @@ public class JoinIdTitle {
 			for( Text value : values ) {
 				String info = value.toString();
 				String[] tokens = info.split( "\t" );
-				
-				if( tokens.length == 2 ) {
-					break;
-				}
-				
+								
 				if( "1".equals( tokens[1] ) ){
 					k.set( tokens[0] + "[" + key + "]" );
 				} else if( "2".equals( tokens[1] ) ) {
