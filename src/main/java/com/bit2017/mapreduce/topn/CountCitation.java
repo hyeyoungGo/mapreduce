@@ -43,35 +43,45 @@ public class CountCitation {
 		Configuration conf = new Configuration();
 		Job job = new Job( conf, "Count Citation" );
 		
-		//1. job instance 초기화 작업
 		job.setJarByClass( CountCitation.class );
 		
-		//2. mapper 클래스 지정
 		job.setMapperClass( MyMapper.class );
-		
-		//3. reducer 클래스 지정
 		job.setReducerClass( MyReducer.class );
 		
-		//4. 출력
 		job.setMapOutputKeyClass( Text.class );
-		
-		//5. 출력 value 타입
 		job.setMapOutputValueClass( LongWritable.class );
 		
-		//6. 입력 파일 포멧 지정(생략 가능)
+
 		job.setInputFormatClass( KeyValueTextInputFormat.class );
-		
-		//7. 출력 파일 포멧 지정(생략 가능)
 		job.setOutputFormatClass(TextOutputFormat.class);
 		
-		//8. 입력파일 이름 지정
+
 		FileInputFormat.addInputPath(job, new Path(args[0]));
-		
-		//9. 출력 디렉토리 지정
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
-		// 실행
-		job.waitForCompletion( true );
+		if ( job.waitForCompletion( true ) == false ) {
+	        return;
+	    }
+		
+		Configuration conf2 = new Configuration();
+	    Job job2 = new Job(conf2, "Top N");
+
+	    job2.setJarByClass( TopN.class );
+	    job2.setOutputKeyClass(Text.class);
+	    job2.setOutputValueClass( LongWritable.class );
+
+	    job2.setMapperClass( TopN.MyMapper.class );
+	    job2.setReducerClass( TopN.MyReducer.class );
+
+	    job2.setInputFormatClass(KeyValueTextInputFormat.class);
+	    job2.setOutputFormatClass(TextOutputFormat.class);
+
+	    // input of Job2 is output of Job
+	    FileInputFormat.addInputPath(job2, new Path(args[1]));
+	    FileOutputFormat.setOutputPath(job2, new Path( args[1] + "/topN" ));
+	    job2.getConfiguration().setInt( "topN", 10 );
+
+	    job2.waitForCompletion(true);
 	}
 
 }
