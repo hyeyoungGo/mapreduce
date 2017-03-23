@@ -64,7 +64,7 @@ public class JoinIdTitle {
 				count++;
 			}
 			// 출력
-			if( count == 2 ) {
+			if( count != 2 ) {
 				return;
 			}
 			context.write( k, v );
