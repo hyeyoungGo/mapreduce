@@ -67,6 +67,7 @@ public class JoinIdTitle {
 			if( count == 2 ) {
 				return;
 			}
+			context.write( k, v );
 			
 		}
 		
