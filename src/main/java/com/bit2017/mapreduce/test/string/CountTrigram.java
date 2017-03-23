@@ -26,19 +26,20 @@ public class CountTrigram {
 				throws IOException, InterruptedException {
 			String line = value.toString();
 			
-			StringTokenizer tokenize = new StringTokenizer(line, "\r\n\t,|()<> ''");
+			StringTokenizer tokenize = new StringTokenizer(line, "\r\n\t,|()<> ''.:");
 			if( tokenize.countTokens() <= 2 ) {
-				String firstToken = tokenize.nextToken().toLowerCase();
-				String secondToken = tokenize.nextToken().toLowerCase();
+				return;
+			}
+			String firstToken = tokenize.nextToken().toLowerCase().toString();
+			String secondToken = tokenize.nextToken().toLowerCase().toString();
 				
-				while( tokenize.hasMoreTokens() ) {
-					String thirdToken = tokenize.nextToken().toLowerCase();
-					trigram.set( firstToken + " " + secondToken + " " + thirdToken );
-					context.write(trigram, one);
-					
-					firstToken = secondToken;
-					secondToken = thirdToken;
-				}
+			while( tokenize.hasMoreTokens() ) {
+				String thirdToken = tokenize.nextToken().toLowerCase();
+				trigram.set( firstToken + " " + secondToken + " " + thirdToken );
+				context.write(trigram, one);
+				
+				firstToken = secondToken;
+				secondToken = thirdToken;
 			}
 		}
 	}	
