@@ -41,7 +41,7 @@ public class CountCitation {
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
-		Job job = new Job( conf, "CountCitation" );
+		Job job = new Job( conf, "Count Citation" );
 		
 		//1. job instance 초기화 작업
 		job.setJarByClass( CountCitation.class );
